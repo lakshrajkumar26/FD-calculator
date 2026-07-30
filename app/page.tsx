@@ -17,7 +17,14 @@ export default function Home() {
   const [years , setYears] = useState(5);
   const [ interest , setInterest] = useState("Quarterly");
 
+  const [calcInputs, setCalcInputs] = useState({ deposit, rate, years, interest });
+
+  const handleCalculate = () => {
+    setCalcInputs({ deposit, rate, years, interest });
+  };
+
   const { maturityAmount, interestEarned, chartData } = useMemo(() => {
+    const { deposit, rate, years, interest } = calcInputs;
     const n = frequencyMap[interest as keyof typeof frequencyMap];
     const amount = deposit * Math.pow(1 + rate / (100 * n), n * years);
     const maturityAmount = Math.round(amount);
@@ -30,7 +37,7 @@ export default function Home() {
     }
 
     return { maturityAmount, interestEarned, chartData: data };
-  }, [deposit, rate, years, interest]);
+  }, [calcInputs]);
 
   return (
     <main className=" min-h-screen bg-white p-8">
@@ -100,7 +107,7 @@ export default function Home() {
 
                </div>
 
-               <button className="bg-[#D1B29B]  px-5 py-3 rounded-full text-white" >Calculate</button>
+               <button className="bg-[#D1B29B]  px-5 py-3 rounded-full text-white" onClick={handleCalculate}>Calculate</button>
            
            </div>
 
