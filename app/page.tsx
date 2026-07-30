@@ -25,29 +25,29 @@ export default function Home() {
     <main className=" min-h-screen bg-white p-8">
       <div className="max-w-8xl mx-auto flex flex-col  lg:flex-row gap-8">
         <div className="left-div w-full  lg:w-[45%] bg-white  rounded-3xl p-8 "> 
-         <h1 className=" text-4xl font-bold text-[#D1B29B] ">FD calculator</h1>
+         <h1 className=" text-4xl font-bold text-[#D1B29B] ">FD Calculator</h1>
          <p className="text-gray-500 mt-2">Estimates how much your fixed deposit investment will grow over time</p>
            
            <div className="mt-10">
 
            <div className="flex justify-between">
-            <h2 className="text-xl font-semibold text-[#D1B29B] ">Deposit Amount ($)</h2>
-            <span className="font-bold">{deposit.toLocaleString()}</span>
+            <h2 className="text-xl font-semibold text-[#D1B29B] ">Deposit Amount (₹)</h2>
+            <span className="font-bold bg-gray-100 px-4 py-2 rounded-full">{deposit}</span>
            </div>
 
-           <input type="range" min={100000} max={500000} className="w-full mt-4 accent-amber-300 " value={deposit} onChange={ (e) => setDeposit(Number(e.target.value))} />
+           <input type="range" min={10000} max={5000000} className="w-full mt-4 accent-amber-300 " value={deposit} onChange={ (e) => setDeposit(Number(e.target.value))} />
 
 
            <div className="flex justify-between text-sm text-gray-500 mt-2">
-            <span>$10000</span>
-            <span>$2445000</span>
-            <span>$500000</span>
+            <span>10000</span>
+            <span>2445000</span>
+            <span>5000000</span>
            </div>
 
              <div className="mt-10">
               <div className="flex justify-between">
-                <h2 className="text-xl font-semibold text-[#D1B29B] ">Rate of Return</h2>
-                <span className="font-bold">{rate}</span>
+                <h2 className="text-xl font-semibold text-[#D1B29B] ">Rate Of Return (%)</h2>
+                <span className="font-bold bg-gray-100 px-4 py-2 rounded-full">{rate}</span>
               </div>
 
               <input type="range" min={5} max={30} className="w-full mt-4 accent-amber-300 " value={rate} onChange={ (e) => setRate(Number(e.target.value))} />
@@ -63,9 +63,9 @@ export default function Home() {
 
              <div className="mt-10">
               <h2 className="text-xl font-semibold text-[#D1B29B] " >Interest Payout</h2>
-              <p>Cumulative Rate Of Return is <span className="text-green-700 text-sm mt-1">7.19%</span> </p>
-               
-               <div className="flex flex-wrap gap-3 mt-5"> {["Quarterly" , "Half Yearly" , "Yearly" , "At Maturity"].map( (item)=> ( <button key={item} onClick={ () =>  setInterest(item)} className={`px-5 py-3 rounded-full transition ${interest === item ? "bg-[#D1B29B]  text-white " : "bg-gray-100 text-gray-700" } `}> {item}</button>) ) }</div>
+              <p className="text-sm text-gray-500">Cumulative Rate Of Return is <span className="text-green-700">7.19%</span></p>
+
+               <div className="flex flex-wrap gap-3 mt-5"> {["Quarterly" , "Half yearly" , "Yearly" , "At Maturity"].map( (item)=> ( <button key={item} onClick={ () =>  setInterest(item)} className={`px-5 py-3 rounded-full transition ${interest === item ? "bg-[#D1B29B]  text-white " : "bg-gray-100 text-gray-700" } `}> {item}</button>) ) }</div>
              </div>
 
               
@@ -75,9 +75,9 @@ export default function Home() {
 
             <div className="flex justify-between mt-10">
 
-            <h2 className="text-xl font-semibold text-[#D1B29B] "> Time Peroid (Years)</h2>
+            <h2 className="text-xl font-semibold text-[#D1B29B] ">Time Period (Years)</h2>
 
-            <span className="font-bold">{years}</span>
+            <span className="font-bold bg-gray-100 px-4 py-2 rounded-full">{years}</span>
           </div>
                <input type="range" min={1} max={50} className="w-full mt-4 accent-amber-300 " value={years} onChange={ (e) => setYears(Number(e.target.value))} />
 
@@ -95,20 +95,20 @@ export default function Home() {
 
 
 
-       <div className="right-dev w-full lg:w-[55%] bg-[#D1B29B] space-y-6 flex flex-col gap-6 min-h-">
+       <div className="right-dev w-full lg:w-[55%] bg-[#D1B29B] rounded-3xl p-8 flex flex-col gap-6">
 
-         <div className="rounded-3xl p-8">
+         <div>
           <div className="flex justify-between text-white">
 
          <div >
           <p className="text-sm">Maturity Amount</p>
-          <h2 className="text-4xl font-bold">$1,41,478</h2>
+          <h2 className="text-4xl font-bold">₹1,41,478</h2>
           </div>    
           
 
             <div className="text-right" >
           <p className="text-sm">Interest Earned</p>
-          <h2 className="text-4xl font-bold">$41,478</h2>
+          <h2 className="text-4xl font-bold">₹41,478</h2>
           </div> 
 
           </div>
