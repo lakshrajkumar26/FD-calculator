@@ -1,19 +1,14 @@
 "use client"
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Bar, BarChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
-const chartData = [
-
-  {year: "1" , value: 20000},
-  {year: "2" , value: 30000},
-  {year: "3" , value: 50000},
-  {year: "4" , value: 70000},
-  {year: "5" , value: 90000},
-
-]
-
-
+const frequencyMap = {
+  Quarterly: 4,
+  "Half yearly": 2,
+  Yearly: 1,
+  "At Maturity": 1,
+};
 
 export default function Home() {
 
@@ -21,6 +16,22 @@ export default function Home() {
   const [rate , setRate] = useState(7);
   const [years , setYears] = useState(5);
   const [ interest , setInterest] = useState("Quarterly");
+
+  const { maturityAmount, interestEarned, chartData } = useMemo(() => {
+    const n = frequencyMap[interest as keyof typeof frequencyMap];
+    const amount = deposit * Math.pow(1 + rate / (100 * n), n * years);
+    const maturityAmount = Math.round(amount);
+    const interestEarned = maturityAmount - deposit;
+
+    const data = [];
+    for (let i = 1; i <= years; i++) {
+      const yearlyAmount = deposit * Math.pow(1 + rate / (100 * n), n * i);
+      data.push({ year: `${i}`, value: Math.round(yearlyAmount) });
+    }
+
+    return { maturityAmount, interestEarned, chartData: data };
+  }, [deposit, rate, years, interest]);
+
   return (
     <main className=" min-h-screen bg-white p-8">
       <div className="max-w-8xl mx-auto flex flex-col  lg:flex-row gap-8">
@@ -63,7 +74,7 @@ export default function Home() {
 
              <div className="mt-10">
               <h2 className="text-xl font-semibold text-[#D1B29B] " >Interest Payout</h2>
-              <p className="text-sm text-gray-500">Cumulative Rate Of Return is <span className="text-green-700">7.19%</span></p>
+              <p className="text-sm text-gray-500">Cumulative Rate Of Return is <span className="text-green-700">{(((maturityAmount - deposit) / deposit) * 100).toFixed(2)}%</span></p>
 
                <div className="flex flex-wrap gap-3 mt-5"> {["Quarterly" , "Half yearly" , "Yearly" , "At Maturity"].map( (item)=> ( <button key={item} onClick={ () =>  setInterest(item)} className={`px-5 py-3 rounded-full transition ${interest === item ? "bg-[#D1B29B]  text-white " : "bg-gray-100 text-gray-700" } `}> {item}</button>) ) }</div>
              </div>
@@ -102,13 +113,13 @@ export default function Home() {
 
          <div >
           <p className="text-sm">Maturity Amount</p>
-          <h2 className="text-4xl font-bold">₹1,41,478</h2>
+          <h2 className="text-4xl font-bold">₹{maturityAmount.toLocaleString("en-IN")}</h2>
           </div>    
           
 
             <div className="text-right" >
           <p className="text-sm">Interest Earned</p>
-          <h2 className="text-4xl font-bold">₹41,478</h2>
+          <h2 className="text-4xl font-bold">₹{interestEarned.toLocaleString("en-IN")}</h2>
           </div> 
 
           </div>
@@ -118,8 +129,8 @@ export default function Home() {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData}>
                 <XAxis dataKey="year" />
-                <YAxis/>
-                <Tooltip/>
+                <YAxis tickFormatter={(value) => `₹${(value / 1000).toFixed(0)}K`} />
+                <Tooltip formatter={(value) => [`₹${Number(value).toLocaleString("en-IN")}`, "Amount"]} />
                 <Bar  dataKey="value" fill="#B67844" radius={[8,8,0,0]}/>
                 </BarChart>
                 </ResponsiveContainer>
